@@ -181,122 +181,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/13/hexo%E5%85%A5%E9%97%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ccb">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OnePiece">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/13/hexo%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">hexo静态博客搭建及部署</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2019-12-13 00:25:25 / Modified: 22:47:16" itemprop="dateCreated datePublished" datetime="2019-12-13T00:25:25+08:00">2019-12-13</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hexo/" itemprop="url" rel="index">
-                    <span itemprop="name">hexo</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="hexo静态博客"><a href="#hexo静态博客" class="headerlink" title="hexo静态博客"></a>hexo静态博客</h1><h2 id="博客搭建部署hexo-github-io"><a href="#博客搭建部署hexo-github-io" class="headerlink" title="博客搭建部署hexo+github.io"></a>博客搭建部署hexo+github.io</h2><h3 id="安装初始化"><a href="#安装初始化" class="headerlink" title="安装初始化"></a>安装初始化</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br><span class="line">hexo init blog</span><br><span class="line">cd blog</span><br></pre></td></tr></table></figure>
-<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo server</span><br><span class="line">localhost:4000</span><br></pre></td></tr></table></figure>
-<h3 id="创建新博客"><a href="#创建新博客" class="headerlink" title="创建新博客"></a>创建新博客</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new title</span><br></pre></td></tr></table></figure>
-<h3 id="部署到git"><a href="#部署到git" class="headerlink" title="部署到git"></a>部署到git</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">配置_config.yml：</span><br><span class="line">deploy:</span><br><span class="line">  type: &#39;git&#39;</span><br><span class="line">  repo: git@github.com:alittlegit&#x2F;alittlegit.github.io.git</span><br><span class="line">安装部署工具：</span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">执行</span><br><span class="line">hexo deploy  &#x2F;&#x2F; 不更新则使用下面的命令</span><br><span class="line">hexo deploy --generate </span><br><span class="line">或</span><br><span class="line">hexo generate --deploy</span><br></pre></td></tr></table></figure>
-
-<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><ul>
-<li>github搜索hexo theme<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd source&#x2F;themes</span><br><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;hexo-theme-next themes&#x2F;next</span><br><span class="line">更改配置文件：</span><br><span class="line">theme: next</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h1 id="hexo-next使用"><a href="#hexo-next使用" class="headerlink" title="hexo-next使用"></a><a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">hexo-next使用</a></h1><h2 id="设置分类"><a href="#设置分类" class="headerlink" title="设置分类"></a><a href="https://github.com/iissnan/hexo-theme-next/wiki/%E5%88%9B%E5%BB%BA%E5%88%86%E7%B1%BB%E9%A1%B5%E9%9D%A2" target="_blank" rel="noopener">设置分类</a></h2><ul>
-<li>next主题， _config.yml中开启相关设置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: &#x2F; || home</span><br><span class="line">  #about: &#x2F;about&#x2F; || user</span><br><span class="line">  #tags: &#x2F;tags&#x2F; || tags</span><br><span class="line">  categories: &#x2F;categories&#x2F; || th</span><br><span class="line">  archives: &#x2F;archives&#x2F; || archive</span><br><span class="line">  #schedule: &#x2F;schedule&#x2F; || calendar</span><br><span class="line">  #sitemap: &#x2F;sitemap.xml || sitemap</span><br><span class="line">  #commonweal: &#x2F;404&#x2F; || heartbeat</span><br></pre></td></tr></table></figure></li>
-<li>按文档说明添加分类页面<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo new page categories</span><br><span class="line">设置type类型</span><br><span class="line">type: &quot;categories&quot;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<hr>
-<hr>
-<h2 id="博客部署hexo-服务器-非docker和docker"><a href="#博客部署hexo-服务器-非docker和docker" class="headerlink" title="博客部署hexo+服务器(非docker和docker)"></a>博客部署hexo+服务器(非docker和docker)</h2><h3 id="github-git静态博客"><a href="#github-git静态博客" class="headerlink" title="github+git静态博客"></a>github+git静态博客</h3><ul>
-<li>github: <a href="https://github.com/alittlegit/alittlegit.github.io" target="_blank" rel="noopener">https://github.com/alittlegit/alittlegit.github.io</a></li>
-<li>hexo搭建博客，本地发布文章测试</li>
-<li>hexo+github.io，将静态资源部署到github上，</li>
-<li>访问: alittlegit.github.io </li>
-<li>hexo初始及部署具体设置见上面</li>
-</ul>
-<h3 id="hexo静态博客部署到服务器：hexo-node-webhook"><a href="#hexo静态博客部署到服务器：hexo-node-webhook" class="headerlink" title="hexo静态博客部署到服务器：hexo+node+webhook"></a>hexo静态博客部署到服务器：hexo+node+webhook</h3><ul>
-<li>github: <a href="https://github.com/alittlegit/alitllegit-github-deploy" target="_blank" rel="noopener">https://github.com/alittlegit/alitllegit-github-deploy</a></li>
-<li>在服务器项目下克隆hexo的静态资源 git clone <a href="mailto:git@github.com">git@github.com</a>:alittlegit/alittlegit.github.io.git public，命名文件夹为public，gitclone的目的方便后续直接git pull</li>
-<li>服务器上需要新建一个server，托管静态资源即可，pm2管理</li>
-<li>通过webhook持续集成：git上托管的的hexo资源一旦push,服务器自动pull，可以及时更新</li>
-<li>访问： <a href="http://onepiece.suprise.top/" target="_blank" rel="noopener">http://onepiece.suprise.top/</a></li>
-</ul>
-<h3 id="hexo静态博客部署到服务器：hexo-node-docker-webhook"><a href="#hexo静态博客部署到服务器：hexo-node-docker-webhook" class="headerlink" title="hexo静态博客部署到服务器：hexo+node(docker)+webhook"></a>hexo静态博客部署到服务器：hexo+node(docker)+webhook</h3><ul>
-<li>github: <a href="https://github.com/alittlegit/alitllegit-github-docker" target="_blank" rel="noopener">https://github.com/alittlegit/alitllegit-github-docker</a></li>
-<li>git clone静态资源，同上</li>
-<li>新建一个pm2 docker容器，容器中开启node server</li>
-<li>webhook持续集成：git上托管的的hexo资源一旦push,服务器自动pull，自动重启docker,及时更新</li>
-<li>访问： <a href="http://docker.suprise.top/" target="_blank" rel="noopener">http://docker.suprise.top/</a></li>
-</ul>
-<h3 id="workflow"><a href="#workflow" class="headerlink" title="workflow"></a>workflow</h3><ul>
-<li>本地hexo更新文章==&gt;hexo deploy上传git，更新静态资源==&gt;alittlegit.github.io 文章更新</li>
-<li>本地hexo更新文章==&gt;hexo deploy上传git，更新静态资源==&gt;webhook==&gt;服务器git pull==&gt;<a href="http://onepiece.suprise.top/" target="_blank" rel="noopener">http://onepiece.suprise.top/</a> 文章更新</li>
-<li>本地hexo更新文章==&gt;hexo deploy上传git，更新静态资源==&gt;webhook==&gt;服务器git pull+”resbulid docker”==&gt;<a href="http://onepiece.suprise.top/" target="_blank" rel="noopener">http://onepiece.suprise.top/</a> 文章更新</li>
-</ul>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ul>
-<li>服务器/docker/webhook分别使用一个端口，nginx转发，webhook是设置在项目的setting中的</li>
-<li>注意docker build的路径，可以指定context,ADD/COPY 文件不能超出context</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/13/react%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -525,6 +409,122 @@
 <li>redux原理 react-redux原理 单向数据流  </li>
 <li>hook  函数组件管理state</li>
 <li>dva router原理</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/13/hexo%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E5%8F%8A%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ccb">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OnePiece">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/13/hexo%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E5%8F%8A%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">hexo静态博客搭建及部署</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2019-12-13 00:25:25 / Modified: 22:59:08" itemprop="dateCreated datePublished" datetime="2019-12-13T00:25:25+08:00">2019-12-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/hexo/" itemprop="url" rel="index">
+                    <span itemprop="name">hexo</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="hexo静态博客"><a href="#hexo静态博客" class="headerlink" title="hexo静态博客"></a>hexo静态博客</h1><h2 id="博客搭建部署hexo-github-io"><a href="#博客搭建部署hexo-github-io" class="headerlink" title="博客搭建部署hexo+github.io"></a>博客搭建部署hexo+github.io</h2><h3 id="安装初始化"><a href="#安装初始化" class="headerlink" title="安装初始化"></a>安装初始化</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br><span class="line">hexo init blog</span><br><span class="line">cd blog</span><br></pre></td></tr></table></figure>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo server</span><br><span class="line">localhost:4000</span><br></pre></td></tr></table></figure>
+<h3 id="创建新博客"><a href="#创建新博客" class="headerlink" title="创建新博客"></a>创建新博客</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new title</span><br></pre></td></tr></table></figure>
+<h3 id="部署到git"><a href="#部署到git" class="headerlink" title="部署到git"></a>部署到git</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">配置_config.yml：</span><br><span class="line">deploy:</span><br><span class="line">  type: &#39;git&#39;</span><br><span class="line">  repo: git@github.com:alittlegit&#x2F;alittlegit.github.io.git</span><br><span class="line">安装部署工具：</span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">执行</span><br><span class="line">hexo deploy  &#x2F;&#x2F; 不更新则使用下面的命令</span><br><span class="line">hexo deploy --generate </span><br><span class="line">或</span><br><span class="line">hexo generate --deploy</span><br></pre></td></tr></table></figure>
+
+<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><ul>
+<li>github搜索hexo theme<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd source&#x2F;themes</span><br><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;hexo-theme-next themes&#x2F;next</span><br><span class="line">更改配置文件：</span><br><span class="line">theme: next</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="hexo-next使用"><a href="#hexo-next使用" class="headerlink" title="hexo-next使用"></a><a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">hexo-next使用</a></h4><h4 id="设置分类"><a href="#设置分类" class="headerlink" title="设置分类"></a><a href="https://github.com/iissnan/hexo-theme-next/wiki/%E5%88%9B%E5%BB%BA%E5%88%86%E7%B1%BB%E9%A1%B5%E9%9D%A2" target="_blank" rel="noopener">设置分类</a></h4><ul>
+<li>next主题， _config.yml中开启相关设置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: &#x2F; || home</span><br><span class="line">  #about: &#x2F;about&#x2F; || user</span><br><span class="line">  #tags: &#x2F;tags&#x2F; || tags</span><br><span class="line">  categories: &#x2F;categories&#x2F; || th</span><br><span class="line">  archives: &#x2F;archives&#x2F; || archive</span><br><span class="line">  #schedule: &#x2F;schedule&#x2F; || calendar</span><br><span class="line">  #sitemap: &#x2F;sitemap.xml || sitemap</span><br><span class="line">  #commonweal: &#x2F;404&#x2F; || heartbeat</span><br></pre></td></tr></table></figure></li>
+<li>按文档说明添加分类页面<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo new page categories</span><br><span class="line">设置type类型</span><br><span class="line">type: &quot;categories&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<hr>
+<h2 id="博客部署hexo-服务器-非docker和docker"><a href="#博客部署hexo-服务器-非docker和docker" class="headerlink" title="博客部署hexo+服务器(非docker和docker)"></a>博客部署hexo+服务器(非docker和docker)</h2><h3 id="github-git静态博客"><a href="#github-git静态博客" class="headerlink" title="github+git静态博客"></a>github+git静态博客</h3><ul>
+<li>github: <a href="https://github.com/alittlegit/alittlegit.github.io" target="_blank" rel="noopener">https://github.com/alittlegit/alittlegit.github.io</a></li>
+<li>hexo搭建博客，本地发布文章测试</li>
+<li>hexo+github.io，将静态资源部署到github上，</li>
+<li>访问: alittlegit.github.io </li>
+<li>hexo初始及部署具体设置见上面</li>
+</ul>
+<h3 id="hexo静态博客部署到服务器：hexo-node-webhook"><a href="#hexo静态博客部署到服务器：hexo-node-webhook" class="headerlink" title="hexo静态博客部署到服务器：hexo+node+webhook"></a>hexo静态博客部署到服务器：hexo+node+webhook</h3><ul>
+<li>github: <a href="https://github.com/alittlegit/alitllegit-github-deploy" target="_blank" rel="noopener">https://github.com/alittlegit/alitllegit-github-deploy</a></li>
+<li>在服务器项目下克隆hexo的静态资源 git clone <a href="mailto:git@github.com">git@github.com</a>:alittlegit/alittlegit.github.io.git public，命名文件夹为public，gitclone的目的方便后续直接git pull</li>
+<li>服务器上需要新建一个server，托管静态资源即可，pm2管理</li>
+<li>通过webhook持续集成：git上托管的的hexo资源一旦push,服务器自动pull，可以及时更新</li>
+<li>访问： <a href="http://onepiece.suprise.top/" target="_blank" rel="noopener">http://onepiece.suprise.top/</a></li>
+</ul>
+<h3 id="hexo静态博客部署到服务器：hexo-node-docker-webhook"><a href="#hexo静态博客部署到服务器：hexo-node-docker-webhook" class="headerlink" title="hexo静态博客部署到服务器：hexo+node(docker)+webhook"></a>hexo静态博客部署到服务器：hexo+node(docker)+webhook</h3><ul>
+<li>github: <a href="https://github.com/alittlegit/alitllegit-github-docker" target="_blank" rel="noopener">https://github.com/alittlegit/alitllegit-github-docker</a></li>
+<li>git clone静态资源，同上</li>
+<li>新建一个pm2 docker容器，容器中开启node server</li>
+<li>webhook持续集成：git上托管的的hexo资源一旦push,服务器自动pull，自动重启docker,及时更新</li>
+<li>访问： <a href="http://docker.suprise.top/" target="_blank" rel="noopener">http://docker.suprise.top/</a></li>
+</ul>
+<h3 id="workflow"><a href="#workflow" class="headerlink" title="workflow"></a>workflow</h3><ul>
+<li>本地hexo更新文章==&gt;hexo deploy上传git，更新静态资源==&gt;alittlegit.github.io 文章更新</li>
+<li>本地hexo更新文章==&gt;hexo deploy上传git，更新静态资源==&gt;webhook==&gt;服务器git pull==&gt;<a href="http://onepiece.suprise.top/" target="_blank" rel="noopener">http://onepiece.suprise.top/</a> 文章更新</li>
+<li>本地hexo更新文章==&gt;hexo deploy上传git，更新静态资源==&gt;webhook==&gt;服务器git pull+”resbulid docker”==&gt;<a href="http://onepiece.suprise.top/" target="_blank" rel="noopener">http://onepiece.suprise.top/</a> 文章更新</li>
+</ul>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ul>
+<li>服务器/docker/webhook分别使用一个端口，nginx转发，webhook是设置在项目的setting中的</li>
+<li>注意docker build的路径，可以指定context,ADD/COPY 文件不能超出context</li>
 </ul>
 
       
