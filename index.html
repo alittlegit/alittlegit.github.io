@@ -204,10 +204,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2019-12-13 23:43:35 / Modified: 23:50:55" itemprop="dateCreated datePublished" datetime="2019-12-13T23:43:35+08:00">2019-12-13</time>
+              <time title="Created: 2019-12-13 23:43:35" itemprop="dateCreated datePublished" datetime="2019-12-13T23:43:35+08:00">2019-12-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-12-14 00:18:19" itemprop="dateModified" datetime="2019-12-14T00:18:19+08:00">2019-12-14</time>
+              </span>
 
           
 
@@ -220,7 +226,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="二十三-Vue2-5实战模版语法组件化"><a href="#二十三-Vue2-5实战模版语法组件化" class="headerlink" title="二十三 Vue2.5实战模版语法组件化"></a>二十三 Vue2.5实战模版语法组件化</h1><ul>
+          <p><img src="/images/wechatpay.png" alt="wechatpay"></p>
+<h1 id="二十三-Vue2-5实战模版语法组件化"><a href="#二十三-Vue2-5实战模版语法组件化" class="headerlink" title="二十三 Vue2.5实战模版语法组件化"></a>二十三 Vue2.5实战模版语法组件化</h1><ul>
 <li><p>vue创建项目提示脚本错误： <a href="https://blog.csdn.net/qq_45164496/article/details/102170303" target="_blank" rel="noopener">https://blog.csdn.net/qq_45164496/article/details/102170303</a></p>
 </li>
 <li><pre><code>new  Vue({})    // vue的入口，， 顶级的父元素
@@ -275,10 +282,11 @@ export default{} // 单文件组件对外暴露的内容
 </ul>
 </li>
 <li><p>路由异步加载：   打包时不经常访问的路由可以使用异步路由，打包的文件则不包含异步路由， 异步路由是在点击时异步加载；； 清除缓存,点击其他路由时不会有请求，因为一开始都加载了（第一次加载首页也有0.js啊？），， ，第一次点击登录时会加载0.js;;;;; 和require ，  script标签加载js 原理一致 ..  ??</p>
-<p><img src="images%5C1571376664080.png" alt="1571376664080"></p>
 </li>
-<li><p>数据处理：   props(层层传递) ； provide/inject（子孙共享）； this.$emit(组件内部派发，外部使用组件处事件监听)；  this.$bus.emit/on (组件间进行通信)；     <strong>vuex: 数据管理中心</strong>（storage/stage/mutation）</p>
-</li>
+</ul>
+<p><img src="images/1571376664080.png" alt="1571376664080"></p>
+<ul>
+<li>数据处理：   props(层层传递) ； provide/inject（子孙共享）； this.$emit(组件内部派发，外部使用组件处事件监听)；  this.$bus.emit/on (组件间进行通信)；     <strong>vuex: 数据管理中心</strong>（storage/stage/mutation）</li>
 </ul>
 <ul>
 <li><p><strong>vue使用插件</strong>use， vue-router属于插件级别  ；    vuex也是插件</p>
@@ -340,9 +348,9 @@ Vue.prototype.$axios = axios
 <li><p>报个错，然后定位到相关文件，加断点</p>
 </li>
 <li><p>在webpack://下找   ./src  , 加断点</p>
-<p><img src="images%5C1571716212400.png" alt="1571716212400"></p>
 </li>
 </ul>
+<p><img src="/images/1571716212400.png" alt="1571716212400"></p>
 <h2 id="el-和-mount-挂载组件区别"><a href="#el-和-mount-挂载组件区别" class="headerlink" title="el  和 mount 挂载组件区别"></a>el  和 mount 挂载组件区别</h2><ul>
 <li>自定义消息提示中 将Notice.vue挂载到了body上，先$mount(),然后再原生append</li>
 </ul>
