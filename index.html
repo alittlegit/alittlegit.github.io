@@ -181,6 +181,201 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/13/vue%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ccb">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OnePiece">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/13/vue%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">vue学习笔记</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2019-12-13 23:43:35 / Modified: 23:44:24" itemprop="dateCreated datePublished" datetime="2019-12-13T23:43:35+08:00">2019-12-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="二十三-Vue2-5实战模版语法组件化"><a href="#二十三-Vue2-5实战模版语法组件化" class="headerlink" title="二十三 Vue2.5实战模版语法组件化"></a>二十三 Vue2.5实战模版语法组件化</h1><ul>
+<li><p>vue创建项目提示脚本错误： <a href="https://blog.csdn.net/qq_45164496/article/details/102170303" target="_blank" rel="noopener">https://blog.csdn.net/qq_45164496/article/details/102170303</a></p>
+</li>
+<li><pre><code>new  Vue({})    // vue的入口，， 顶级的父元素
+
+Vew.component()   // 新建全局组件,不用import
+
+export default{} // 单文件组件对外暴露的内容
+
+</code></pre></li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- </span><br><span class="line"></span><br><span class="line">- **promise  &#x3D;&#x3D;》 async await**</span><br><span class="line"></span><br><span class="line">  &#96;&#96;&#96;javascript</span><br><span class="line">  &#x2F;&#x2F;promise写法</span><br><span class="line">    axios.get(&#39;api&#x2F;goods&#39;).then((response)&#x3D;&gt;&#123;</span><br><span class="line">        console.log(response);</span><br><span class="line">        this.goods&#x3D; response.data.list;</span><br><span class="line">      &#125;).catch(()&#x3D;&gt;&#123;</span><br><span class="line">        </span><br><span class="line">      &#125;)</span><br><span class="line">  &#x2F;&#x2F;console.log(&#39;我是请求后面的内容!&#39;);      &#x2F;&#x2F;先执行这句， 后输出response</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">   &#x2F;&#x2F;改为async   await  同步写法,  错误处理用普通的try catch</span><br><span class="line">  async created()&#123;</span><br><span class="line">       try&#123;</span><br><span class="line">        &#x2F;&#x2F;console.log(&#39;开始请求&#39;);</span><br><span class="line">        const res &#x3D; await axios.get(&#39;&#x2F;api&#x2F;goods&#39;)</span><br><span class="line">        &#x2F;&#x2F;console.log(res);</span><br><span class="line">        this.goods &#x3D; res.data.list;</span><br><span class="line">      &#125;</span><br><span class="line">      catch(e)&#123;</span><br><span class="line">  </span><br><span class="line">      &#125;</span><br><span class="line">      &#x2F;&#x2F;console.log(&#39;我是请求后面的内容!&#39;);   &#x2F;&#x2F; 从上到下按顺序执行</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="二十四-Vue2-5实战UI组件库-定制组件"><a href="#二十四-Vue2-5实战UI组件库-定制组件" class="headerlink" title="二十四 Vue2.5实战UI组件库 定制组件"></a>二十四 Vue2.5实战UI组件库 定制组件</h1><ul>
+<li>form form-item input组件的定制    </li>
+<li>props既可以是数组，也可以是对象：  猜测应该是通过获取属性时调用方式是一样的吧， props属性为单值时用数组，props属性为对象时，props用对象</li>
+<li>provide既可以是函数，也可以是对象： 猜测函数时相当于同名字段属性（应该就是get属性吧，注意不是方法，方法都放在method中），要有返回值return 一个对象</li>
+<li>props传递的数据不能修改，需要赋值给组件中的变量，然后是修改使用</li>
+<li>单向数据流： 通过props传递的值，得通过父元素修改，再传给自己</li>
+<li><strong>自定义组件</strong> 实现v-model 需要实现两方面 ， 组件中接受value,  组件修改值后派发input事件，修改传递的外部value ，， 具体看 k-input的实现</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">* 实现v-model: </span><br><span class="line">&lt;!--</span><br><span class="line">    v-model 等价于</span><br><span class="line">    :value=<span class="string">"valuetext"</span> @input=<span class="string">"valuetext=$event"</span></span><br><span class="line">    --&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>provide inject 和props 对比</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">provide()&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    form: <span class="keyword">this</span>    <span class="comment">// 给子级提供form实例 ，子级注入使用form实例；  体会provide inject和props的区别 , provide inject封装在组件内部，是一般底层开发控件时用到的，开发用到所以必须得提供给下级，而props是在外部，使用该控件时可选择性的输入属性，一个是开发必须，”偷偷摸摸“，一个是可选择，正大光明；一个面向底层实现，一个面向用户使用；； 如果是强制用props开发，会造成用户使用时得强制传入一个固定的输入属性，用于底层的实现，，这样用户体验不好，能底层默认实现的，就直接提供注入就好了</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h1 id="二十五-Vue2-5实战-Vuex单向数据流-Vue-router单页应用"><a href="#二十五-Vue2-5实战-Vuex单向数据流-Vue-router单页应用" class="headerlink" title="二十五 Vue2.5实战 Vuex单向数据流 Vue-router单页应用"></a>二十五 Vue2.5实战 Vuex单向数据流 Vue-router单页应用</h1><ul>
+<li><p>单页应用： spa   路由的控制权在前端</p>
+</li>
+<li><p>路由哈希模式/history模式： </p>
+<p>哈希： <a href="http://localhost:8080/#/page1" target="_blank" rel="noopener">http://localhost:8080/#/page1</a>  不利于seo, 认为是一个页面 ， 因为 # 一般用于页面内部跳转</p>
+<p>history：<a href="http://localhost:8080/page1" target="_blank" rel="noopener">http://localhost:8080/page1</a></p>
+</li>
+</ul>
+<ul>
+<li><p>Use history mode for router? (Requires proper server setup for index fallback in production)</p>
+<p><strong>history部署时要和后台</strong>  index ？？？  todo   ,, vue是前台控制路由，打包后只有一个index文件作为路口</p>
+</li>
+<li><p>查看源码：比如   view-source:<a href="http://localhost:8080/dashboard/page1" target="_blank" rel="noopener">http://localhost:8080/dashboard/page1</a>  ，发现无论哪个路由都是这一个文件，后台需要根据这个文件配置；； </p>
+</li>
+<li><p>routerLink和href</p>
+<ul>
+<li><p>routerLink  会局部刷新，只刷新目标路由页面,url里不会刷新</p>
+</li>
+<li><p>href 会刷新整个页面，url会刷新，重新加载整个页面</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">     <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">router-link</span> <span class="attr">to</span>=<span class="string">"/page1"</span>&gt;</span>页面1<span class="tag">&lt;/<span class="name">router-link</span>&gt;</span>|</span><br><span class="line">          <span class="tag">&lt;<span class="name">router-link</span> <span class="attr">to</span>=<span class="string">"/page2"</span>&gt;</span>页面2<span class="tag">&lt;/<span class="name">router-link</span>&gt;</span>|</span><br><span class="line">          <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/page1"</span>&gt;</span>href页面1<span class="tag">&lt;/<span class="name">a</span>&gt;</span>|</span><br><span class="line">          <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/page2"</span>&gt;</span>href页面2<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>路由异步加载：   打包时不经常访问的路由可以使用异步路由，打包的文件则不包含异步路由， 异步路由是在点击时异步加载；； 清除缓存,点击其他路由时不会有请求，因为一开始都加载了（第一次加载首页也有0.js啊？），， ，第一次点击登录时会加载0.js;;;;; 和require ，  script标签加载js 原理一致 ..  ??</p>
+<p><img src="C:%5CUsers%5Cccb%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1571376664080.png" alt="1571376664080"></p>
+</li>
+<li><p>数据处理：   props(层层传递) ； provide/inject（子孙共享）； this.$emit(组件内部派发，外部使用组件处事件监听)；  this.$bus.emit/on (组件间进行通信)；     <strong>vuex: 数据管理中心</strong>（storage/stage/mutation）</p>
+</li>
+</ul>
+<ul>
+<li><p><strong>vue使用插件</strong>use， vue-router属于插件级别  ；    vuex也是插件</p>
+<p>import VueRouter from ‘vue-router’ // 不加/ 是node_modules</p>
+<p> // use启用插件</p>
+<p>Vue.use(VueRouter); //this.$route  use将$route挂载到了Vue原型上</p>
+</li>
+<li><p><strong>形参使用解构赋值</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">actions: &#123; &#x2F;&#x2F; 异步的mutations  数据的修改还是要调用mutations修改</span><br><span class="line">       &#x2F;&#x2F; incrementAsync(store) &#123;</span><br><span class="line">       &#x2F;&#x2F;     store.commit(&#39;increment&#39;);</span><br><span class="line">       &#x2F;&#x2F; &#125;</span><br><span class="line">       incrementAsync(&#123;commit&#125;)&#123;   &#x2F;&#x2F; 传参时可以形参可以直接解构出对应的变量</span><br><span class="line">		commit(&#39;increment&#39;)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">  注： 给incrementAsync传递参数为store对象，可以用一个形参store接收， 也可以用&#123;commit&#125;接收，，意思是实参是store对象，而执行的函数只要store对象中的commit,, 这样些要求store对象中有响应属性，  形参可以直接解构得到，， 使用时省些步骤</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>import/require 引入的文件， 如何调试</p>
+<ul>
+<li><p>import Vuex from ‘vuex’   // es6 用import</p>
+<p>//const Vuex = require(‘vuex’); // 两者写法等价吗， 用require方式也正常执行,, es6之前和node用require, node为什么不用import?</p>
+</li>
+<li><p>以 vuex  mapState为例， 找到vuex,package.json中, 有一个main和moudle对应了两个脚本， 在这两个脚本的开头alert 一下，发现用的是esm.js ， 因此想要调试的话找到方法console就行了，但是如何一步一步调试还不清楚。</p>
+</li>
+<li><p>另外想调试mapState 转到定义到了 helpers.d.ts中，而实际mapState函数在esm.js中，， 待研究</p>
+<p><img src="C:%5CUsers%5Cccb%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1571386987674.png" alt="1571386987674"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="二十六-电商项目实战"><a href="#二十六-电商项目实战" class="headerlink" title="二十六  电商项目实战"></a>二十六  电商项目实战</h1><ul>
+<li><p>ui框架：移动端/web端   选型；；；  vue: cube  element   </p>
+<p>bootstrap过时，基于jquery,class方式使用，不是写标签；；； 响应式针对移动端，，，一般pc和移动要写两套代码</p>
+</li>
+<li><p>ui框架的使用： 先安装， 看文档快速上手， 在webpack中做配置（按需加载，自定义主题）</p>
+</li>
+<li><p>启动项目编译报错  –fix;  在package.json中添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;rules&quot;: &#123;</span><br><span class="line">           &quot;indent&quot;: [1, 4]</span><br><span class="line">       &#125;,</span><br><span class="line">       </span><br><span class="line">       &#x2F;&#x2F; 不行  还是会报错 ， 把package.json中的 &quot;@vue&#x2F;standard&quot; 干掉</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>axios添加到全局</p>
+</li>
+<li><pre><code>//main.js入口文件中添加到Vue原型之上
+import axios from &apos;axios&apos;
+Vue.prototype.$axios = axios
+
+其他组件中使用： this.$axios
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 基本的权限校验： 路由守卫+**拦截器**</span><br><span class="line"></span><br><span class="line">  - **拦截器**： 比如给所有的请求头加上token，所有响应返回处理之前根据状态码进行全局处理（比如： axios的响应结果是http对象，不单单是数据，包含了响应的各种参数，全局设置一个拦截器， 只将符合要求的data返回即可）</span><br><span class="line"></span><br><span class="line">- token</span><br><span class="line"></span><br><span class="line">  - cookie有同源策略的限制，token没有，但需要自己处理实现</span><br><span class="line"></span><br><span class="line"># 二十七  电商项目实战</span><br><span class="line"></span><br><span class="line">- cube-ui  异步校验</span><br><span class="line"></span><br><span class="line">  &#96;&#96;&#96;js</span><br><span class="line">      rules:&#123; &#x2F;&#x2F; 校验规则</span><br><span class="line">                              required: true,</span><br><span class="line">                              type: &#39;string&#39;,   &#x2F;&#x2F;对应的自定义校验信息写在messages,,</span><br><span class="line">                              min: 3,</span><br><span class="line">                              max: 15,</span><br><span class="line">                              &#x2F;&#x2F; 自定义异步校验： 校验登录用户名是否存在</span><br><span class="line">                              &#x2F;&#x2F; 异步校验的规则： 函数，接收一个resolve参数， 或者是一个promise</span><br><span class="line">                              &#x2F;&#x2F; 意义： 就是返回给控件一个异步校验的函数，将异步校验的函数resolve出去即可，控件会调用异步校验函数，并得到校验结果，写入相关校验信息</span><br><span class="line">                              usercheck:(name)&#x3D;&gt;&#123;</span><br><span class="line">                                  return (resolve)&#x3D;&gt;&#123;   &#x2F;&#x2F; 带上new Promise 也可以，这样更省事</span><br><span class="line">                                      &#x2F;&#x2F;resolve(false);   &#x2F;&#x2F; 会一直不存在，这是同步校验</span><br><span class="line">                                      this.$axios.get(&#39;&#x2F;api&#x2F;check?username&#x3D;&#39;+name).then(res&#x3D;&gt;&#123;</span><br><span class="line">                                          resolve(res.code&#x3D;&#x3D;0) ;   &#x2F;&#x2F; 0为true&#x2F;为校验通过</span><br><span class="line">                                      &#125;)</span><br><span class="line">                                  &#125;</span><br><span class="line">                              &#125;</span><br><span class="line">                          &#125;,</span><br></pre></td></tr></table></figure></code></pre></li>
+<li><p><strong>this.$router</strong> 路由器 负责路由的跳转，，<strong>this.$route</strong> 路由  获取当前路由信息</p>
+</li>
+<li><p>父组件直接使用子组件整个实例： ref</p>
+</li>
+<li><p>stylus  css用法 ；   scoped</p>
+</li>
+</ul>
+<h1 id="二十八-电商项目实战"><a href="#二十八-电商项目实战" class="headerlink" title="二十八  电商项目实战"></a>二十八  电商项目实战</h1><ul>
+<li>header组件： 定位样式    props / slot</li>
+<li>v-if v-show hidden</li>
+<li>阻止冒泡和默认事件    stop   prevent 直接写在事件名中   <strong>@click.stop.prevent</strong>=”addCart($event,item)”</li>
+<li>事件对象的传递   <strong>$event</strong>     $event.target为dom对象</li>
+</ul>
+<h2 id="组件封装"><a href="#组件封装" class="headerlink" title="组件封装"></a>组件封装</h2><ul>
+<li><a href="https://segmentfault.com/a/1190000018926846" target="_blank" rel="noopener">https://segmentfault.com/a/1190000018926846</a></li>
+<li><a href="https://juejin.im/post/5cb3eed65188251b0351f2c4?utm_source=gold_browser_extension#heading-10" target="_blank" rel="noopener">https://juejin.im/post/5cb3eed65188251b0351f2c4?utm_source=gold_browser_extension#heading-10</a></li>
+</ul>
+<h2 id="文件调试"><a href="#文件调试" class="headerlink" title="文件调试"></a>文件调试</h2><ul>
+<li><p>报个错，然后定位到相关文件，加断点</p>
+</li>
+<li><p>在webpack://下找   ./src  , 加断点</p>
+<p><img src="C:%5CUsers%5Cccb%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1571716212400.png" alt="1571716212400"></p>
+</li>
+</ul>
+<h2 id="el-和-mount-挂载组件区别"><a href="#el-和-mount-挂载组件区别" class="headerlink" title="el  和 mount 挂载组件区别"></a>el  和 mount 挂载组件区别</h2><ul>
+<li>自定义消息提示中 将Notice.vue挂载到了body上，先$mount(),然后再原生append</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">两者在使用效果上没有任何区别，都是为了将实例化后的vue挂载到指定的dom元素中。</span><br><span class="line"></span><br><span class="line">如果在实例化vue的时候指定el，则该vue将会渲染在此el对应的dom中，反之，若没有指定el，则vue实例会处于一种“未挂载”的状态，此时可以通过$mount来手动执行挂载。</span><br><span class="line"></span><br><span class="line">注：如果$mount没有提供参数，模板将被渲染为文档之外的的元素，并且你必须使用原生DOM API把它插入文档中。</span><br><span class="line"></span><br><span class="line">例如：</span><br><span class="line"></span><br><span class="line">var MyComponent &#x3D; Vue.extend(&#123;</span><br><span class="line">  template: &#39;&lt;div&gt;Hello!&lt;&#x2F;div&gt;&#39;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 创建并挂载到 #app (会替换 #app)</span><br><span class="line">new MyComponent().$mount(&#39;#app&#39;)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 同上</span><br><span class="line">new MyComponent(&#123; el: &#39;#app&#39; &#125;)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 或者，在文档之外渲染并且随后挂载</span><br><span class="line">var component &#x3D; new MyComponent().$mount()</span><br><span class="line">document.getElementById(&#39;app&#39;).appendChild(component.$el)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---脚手架生成 入口main.js中</span><br><span class="line">new Vue(&#123;</span><br><span class="line">    el: &#39;#app&#39;,  &#x2F;&#x2F;el和mount基本等价，el会自动挂载，mount可以选择何时手动挂载，mount不带参数，则需要原生appendChild插入到dom树中</span><br><span class="line">    router,</span><br><span class="line">    store,</span><br><span class="line">    render: h &#x3D;&gt; h(App)</span><br><span class="line">&#125;)</span><br><span class="line">&#x2F;&#x2F;.$mount(&#39;#app&#39;) &#x2F;&#x2F; 把vue实例的dom对象（$el）挂载到id&#x3D;‘app’的节点处</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="二十九-VUE源码"><a href="#二十九-VUE源码" class="headerlink" title="二十九 VUE源码"></a>二十九 VUE源码</h1><ul>
+<li><p>createDocumentFragment() 用法: <a href="https://blog.csdn.net/qiao13633426513/article/details/80243058，" target="_blank" rel="noopener">https://blog.csdn.net/qiao13633426513/article/details/80243058，</a></p>
+</li>
+<li></li>
+<li><p>源码简单实现见代码</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/13/nodejs%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -797,7 +992,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -810,7 +1005,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
