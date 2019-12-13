@@ -181,6 +181,113 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/13/nodejs%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ccb">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OnePiece">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/13/nodejs%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">nodejs常用命令</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2019-12-13 23:20:11 / Modified: 23:21:14" itemprop="dateCreated datePublished" datetime="2019-12-13T23:20:11+08:00">2019-12-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><h2 id="typora几个命令"><a href="#typora几个命令" class="headerlink" title="typora几个命令"></a>typora几个命令</h2><blockquote>
+<ul>
+<li><a href="https://blog.csdn.net/yga_airspace/article/details/79988451" target="_blank" rel="noopener">https://blog.csdn.net/yga_airspace/article/details/79988451</a></li>
+<li>#用于生成标题，不要用Ctrl+数字，麻烦</li>
+<li>大于号 用于生成 竖线</li>
+<li>** 注释内容**  </li>
+</ul>
+</blockquote>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><blockquote>
+<p><a href="https://jingyan.baidu.com/article/48b37f8dd141b41a646488bc.html" target="_blank" rel="noopener">https://jingyan.baidu.com/article/48b37f8dd141b41a646488bc.html</a>  包含了环境变量的设置</p>
+</blockquote>
+<h1 id="系统变量相关"><a href="#系统变量相关" class="headerlink" title="系统变量相关"></a>系统变量相关</h1><h4 id="查看环境变量"><a href="#查看环境变量" class="headerlink" title="查看环境变量"></a>查看环境变量</h4><blockquote>
+<p>path</p>
+<p>npm config  ls -l </p>
+</blockquote>
+<h4 id="默认环境变量"><a href="#默认环境变量" class="headerlink" title="默认环境变量"></a>默认环境变量</h4><blockquote>
+<p>nodejs安装后的全局路径默认为（自动添加进了<strong>Path用户系统变量</strong>）：C:\Users\ccb\AppData\Roaming\npm </p>
+</blockquote>
+<h4 id="修改nodejs缓存目录和全局目录（区别全局安装和本地安装两个路径）"><a href="#修改nodejs缓存目录和全局目录（区别全局安装和本地安装两个路径）" class="headerlink" title="修改nodejs缓存目录和全局目录（区别全局安装和本地安装两个路径）"></a>修改nodejs缓存目录和全局目录（区别全局安装和本地安装两个路径）</h4><blockquote>
+<p>全局安装和本地安装的区别：<a href="https://www.jianshu.com/p/e839326ce30d" target="_blank" rel="noopener">https://www.jianshu.com/p/e839326ce30d</a></p>
+</blockquote>
+<blockquote>
+<p>npm config set prefix “D:\ProgramFiles\nodejs\node_global” 最终模块配置位置，注意在这个就下会再次创建一个node_modules    文件夹（这个属于全局安装路径，类似全局环境变量），而安装目录原有nodejs\node_modules    这个文件夹属于本地安装，程序内相对路径，只对整个程序中放在该路径下的模块起作用。</p>
+</blockquote>
+<blockquote>
+<p>npm config set cache “D:\Program Files\nodejs\node_cache” 存放缓存文件的位置</p>
+</blockquote>
+<h4 id="设置和修改环境变量"><a href="#设置和修改环境变量" class="headerlink" title="设置和修改环境变量"></a>设置和修改环境变量</h4><blockquote>
+<p>修改系统变量：计算机 高级  编辑或新建系统变量，有命令可以设置路径变量（todo）</p>
+</blockquote>
+<blockquote>
+<p>NODE_PATH ：D:\Program Files\nodejs\node_modules    ；npm的环境变量，个人理解应该是给使用模块定义了系统变量，寻找本地安装模块时使用（局部安装？）</p>
+</blockquote>
+<blockquote>
+<p>同样，修改系统变量Path中 原来的C:\Users\ccb\AppData\Roaming\npm  为：D:\ProgramFiles\nodejs\node_global  个人理解这里应该对应的是全局系统变量，调用全局安装模块时用到</p>
+</blockquote>
+<h4 id="node命令"><a href="#node命令" class="headerlink" title="node命令"></a>node命令</h4><blockquote>
+<p>命令行下输入node</p>
+<p>输入 require(‘cluster’)   执行，能够正常输出  环境配置完成；  cluster是通过 npm install装的一个模块进行的试验</p>
+</blockquote>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="命令相关"><a href="#命令相关" class="headerlink" title="命令相关"></a>命令相关</h1><blockquote>
+<p>node  进入node</p>
+<p>require(‘moudulename’)  引入模块</p>
+<p>npm install  npm安装命令  -g代表全局安装</p>
+</blockquote>
+<ul>
+<li>node 中  <strong>ctrl 悬停变量</strong>，点击会转到定义</li>
+<li>修改后自动启动服务器：npm i -g node-dev  （nodejs作为服务器，js文件修改后不会自动生效，html修改后会自动生效），这个命令全局安装，只要文件修改，crtl s后会自动重启服务器，之前的启动命令是npm start  ,其实最终是node ./bin/www，因此修改package.json中的start，即可修改为node-dev执行</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/13/react%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -690,7 +797,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -703,7 +810,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
