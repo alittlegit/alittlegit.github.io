@@ -212,7 +212,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-12-14 00:18:19" itemprop="dateModified" datetime="2019-12-14T00:18:19+08:00">2019-12-14</time>
+                <time title="Modified: 2019-12-14 00:32:06" itemprop="dateModified" datetime="2019-12-14T00:32:06+08:00">2019-12-14</time>
               </span>
 
           
@@ -226,8 +226,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><img src="/images/wechatpay.png" alt="wechatpay"></p>
-<h1 id="二十三-Vue2-5实战模版语法组件化"><a href="#二十三-Vue2-5实战模版语法组件化" class="headerlink" title="二十三 Vue2.5实战模版语法组件化"></a>二十三 Vue2.5实战模版语法组件化</h1><ul>
+          <h1 id="二十三-Vue2-5实战模版语法组件化"><a href="#二十三-Vue2-5实战模版语法组件化" class="headerlink" title="二十三 Vue2.5实战模版语法组件化"></a>二十三 Vue2.5实战模版语法组件化</h1><ul>
 <li><p>vue创建项目提示脚本错误： <a href="https://blog.csdn.net/qq_45164496/article/details/102170303" target="_blank" rel="noopener">https://blog.csdn.net/qq_45164496/article/details/102170303</a></p>
 </li>
 <li><pre><code>new  Vue({})    // vue的入口，， 顶级的父元素
@@ -305,7 +304,7 @@ export default{} // 单文件组件对外暴露的内容
 <li><p>以 vuex  mapState为例， 找到vuex,package.json中, 有一个main和moudle对应了两个脚本， 在这两个脚本的开头alert 一下，发现用的是esm.js ， 因此想要调试的话找到方法console就行了，但是如何一步一步调试还不清楚。</p>
 </li>
 <li><p>另外想调试mapState 转到定义到了 helpers.d.ts中，而实际mapState函数在esm.js中，， 待研究</p>
-<p><img src="images%5C1571386987674.png" alt="1571386987674"></p>
+<p><img src="/images/1571386987674.png" alt="1571386987674"></p>
 </li>
 </ul>
 </li>
@@ -762,10 +761,16 @@ Vue.prototype.$axios = axios
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2019-12-13 00:25:25 / Modified: 22:59:08" itemprop="dateCreated datePublished" datetime="2019-12-13T00:25:25+08:00">2019-12-13</time>
+              <time title="Created: 2019-12-13 00:25:25" itemprop="dateCreated datePublished" datetime="2019-12-13T00:25:25+08:00">2019-12-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-12-14 01:59:24" itemprop="dateModified" datetime="2019-12-14T01:59:24+08:00">2019-12-14</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -806,6 +811,12 @@ Vue.prototype.$axios = axios
 </ul>
 <hr>
 <hr>
+<h3 id="markdown图片配置"><a href="#markdown图片配置" class="headerlink" title="markdown图片配置"></a>markdown图片配置</h3><ul>
+<li>使用typro+<a href="https://vuepress.vuejs.org/zh/guide/frontmatter.html" target="_blank" rel="noopener">Front Matter</a></li>
+<li>设置typro根目录为typro-root-url: ./，也可以在编辑-图片工具-设置根目录里设置后生成，但这样只是一次性的,根路径的设置可以让图片路径以/开头</li>
+<li>设置图片插入时复制到指定目录： 自定义 如： ./images也可以是相对路径</li>
+<li>经过上面的设置可以得到想要的图片路径： /images/xxx.jpg,,如果复制图片的目录不是最终目录的话，最后只要把所有图片再复制到最终目录即可</li>
+</ul>
 <h2 id="博客部署hexo-服务器-非docker和docker"><a href="#博客部署hexo-服务器-非docker和docker" class="headerlink" title="博客部署hexo+服务器(非docker和docker)"></a>博客部署hexo+服务器(非docker和docker)</h2><h3 id="github-git静态博客"><a href="#github-git静态博客" class="headerlink" title="github+git静态博客"></a>github+git静态博客</h3><ul>
 <li>github: <a href="https://github.com/alittlegit/alittlegit.github.io" target="_blank" rel="noopener">https://github.com/alittlegit/alittlegit.github.io</a></li>
 <li>hexo搭建博客，本地发布文章测试</li>
