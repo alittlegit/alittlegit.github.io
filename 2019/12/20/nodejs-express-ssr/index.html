@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="nodejs后台渲染核心知识点expressexpress路由模块化 app.use(path, ‘exported router’) 分文件嵌套使用，按功能命名划分，放置在routes  路由传参 见url参数一节  重定向：   res.redirect(&#39;&#x2F;admin&#x2F;open-course&#39;)   自定义中间件 自定义一个模块并导出 app中require引入该模块， 并且">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nodejs后台渲染核心知识点">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;20&#x2F;nodejs-express-ssr&#x2F;index.html">
+<meta property="og:site_name" content="OnePiece">
+<meta property="og:description" content="nodejs后台渲染核心知识点expressexpress路由模块化 app.use(path, ‘exported router’) 分文件嵌套使用，按功能命名划分，放置在routes  路由传参 见url参数一节  重定向：   res.redirect(&#39;&#x2F;admin&#x2F;open-course&#39;)   自定义中间件 自定义一个模块并导出 app中require引入该模块， 并且">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-12-19T16:25:25.000Z">
+<meta property="article:modified_time" content="2019-12-24T05:06:19.588Z">
+<meta property="article:author" content="ccb">
+<meta property="article:tag" content="nodejs">
+<meta property="article:tag" content="后端">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2019/12/20/nodejs-express-ssr/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>nodejs后台渲染核心知识点 | OnePiece</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">OnePiece</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/20/nodejs-express-ssr/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ccb">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OnePiece">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          nodejs后台渲染核心知识点
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-12-20 00:25:25" itemprop="dateCreated datePublished" datetime="2019-12-20T00:25:25+08:00">2019-12-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-12-24 13:06:19" itemprop="dateModified" datetime="2019-12-24T13:06:19+08:00">2019-12-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">后端</span>
+                  </a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%90%8E%E7%AB%AF/nodejs/" itemprop="url" rel="index">
+                    <span itemprop="name">nodejs</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="nodejs后台渲染核心知识点"><a href="#nodejs后台渲染核心知识点" class="headerlink" title="nodejs后台渲染核心知识点"></a>nodejs后台渲染核心知识点</h1><h2 id="express"><a href="#express" class="headerlink" title="express"></a>express</h2><h3 id="express路由"><a href="#express路由" class="headerlink" title="express路由"></a>express路由</h3><h4 id="模块化"><a href="#模块化" class="headerlink" title="模块化"></a>模块化</h4><ul>
+<li>app.use(path, ‘exported router’)</li>
+<li>分文件嵌套使用，按功能命名划分，放置在routes</li>
+</ul>
+<h4 id="路由传参"><a href="#路由传参" class="headerlink" title="路由传参"></a>路由传参</h4><ul>
+<li><p>见url参数一节</p>
+</li>
+<li><p>重定向：   <code>res.redirect(&#39;/admin/open-course&#39;)</code></p>
+</li>
+</ul>
+<h3 id="自定义中间件"><a href="#自定义中间件" class="headerlink" title="自定义中间件"></a>自定义中间件</h3><ul>
+<li>自定义一个模块并导出</li>
+<li>app中require引入该模块，</li>
+<li>并且用app.use注册该中间件</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//功能：初始化全局变量, 应用级中间件，在每个路由生效</span></span><br><span class="line"><span class="built_in">module</span>.exports.initLocals = <span class="function"><span class="keyword">function</span>(<span class="params">req, res, next</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//存储数据到全局属性res.locals.courses中，res和req是贯穿整个server的各个阶段，，不需要render传递参数, 模板引擎中就可用，</span></span><br><span class="line">    <span class="comment">//app.locals是存储在app实例上的全局属性</span></span><br><span class="line">    res.locals.courses = [&#123;  <span class="comment">// 数据需要从数据库中查询得到</span></span><br><span class="line">            url: <span class="string">'/vip-course/web'</span>, <span class="comment">//注意路径，不能少了前面的/， </span></span><br><span class="line">            icon: <span class="string">'https://www.kaikeba.com/vipcourse/web'</span>,</span><br><span class="line">            name: <span class="string">'web全栈架构师'</span>,</span><br><span class="line">            desc: <span class="string">'深度对标百度'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            url: <span class="string">'/vip-course/python'</span>,</span><br><span class="line">            icon: <span class="string">'https://www.kaikeba.com/vipcourse/python'</span>,</span><br><span class="line">            name: <span class="string">'python全栈架构师'</span>,</span><br><span class="line">            desc: <span class="string">'深度对标百度'</span></span><br><span class="line">        &#125;</span><br><span class="line">    ];</span><br><span class="line">        <span class="comment">//存储布局页layout.hbs中的导航栏视图名称， 根据用户是否登陆，返回不同的导航视图名，布局页所有的路由都要使用，所以不用具路由render变量了</span></span><br><span class="line">    <span class="keyword">const</span> isLogin=<span class="literal">true</span>; <span class="comment">//实际应根据session或数据库获取用户是否登陆</span></span><br><span class="line">    res.locals.navName=isLogin? <span class="string">'nav'</span>: <span class="string">'nav-noAuth'</span>;</span><br><span class="line">    res.locals.obj=&#123;<span class="attr">key</span>:<span class="string">'value'</span>&#125;;</span><br><span class="line"></span><br><span class="line">    next(); <span class="comment">// 进入下一个中间件</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------------</span><br><span class="line"><span class="comment">//全局中间件优化：使用数据库数据（先判断缓存） </span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">const</span> &#123;query&#125;=<span class="built_in">require</span> (<span class="string">'../models/db'</span>);</span><br><span class="line"><span class="comment">//缓存courses  存在则不查询，服务器重启才会消失</span></span><br><span class="line"><span class="keyword">let</span> coursesCache=<span class="literal">null</span>;  <span class="comment">//会改变courses的指向  所以值会变  用let</span></span><br><span class="line"> </span><br><span class="line"><span class="built_in">module</span>.exports.initLocals=<span class="keyword">async</span>  <span class="function"><span class="keyword">function</span>(<span class="params">req,res,next</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//存储布局页layout.hbs中的导航栏视图名称， 根据用户是否登陆，返回不同的导航视图名，布局页所有的路由都要使用，在全局中间件中存储变量</span></span><br><span class="line">    <span class="keyword">const</span> isLogin=<span class="literal">true</span>; <span class="comment">//实际应根据session或数据库获取用户是否登陆</span></span><br><span class="line">    res.locals.navName=isLogin? <span class="string">'nav'</span>: <span class="string">'nav-noAuth'</span>;</span><br><span class="line">    res.locals.obj=&#123;<span class="attr">key</span>:<span class="string">'value'</span>&#125;;</span><br><span class="line">    <span class="keyword">if</span>(coursesCache) &#123;</span><br><span class="line">        res.locals.courses = coursesCache;</span><br><span class="line">        next();<span class="comment">// 进入后续中间件</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> sql = <span class="string">'SELECT * FROM kkb.vip_course'</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> courses = <span class="keyword">await</span> query(sql);<span class="comment">//query必须返回Promise才能使用await</span></span><br><span class="line">            <span class="comment">// cooperation处理一下</span></span><br><span class="line">            courses.forEach(<span class="function"><span class="params">course</span> =&gt;</span></span><br><span class="line">                course.cooperation = course.cooperation.split(<span class="string">','</span>));</span><br><span class="line">            <span class="comment">//console.log(courses);</span></span><br><span class="line">            coursesCache = res.locals.courses = courses;</span><br><span class="line">            next();<span class="comment">// 进入后续中间件</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">            next(err)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="错误处理："><a href="#错误处理：" class="headerlink" title="错误处理："></a>错误处理：</h3><ul>
+<li>createError+error handler(带err参数的callback)</li>
+<li>一般放在最后，按中间件的顺序，若 执行到这，说明有错误，createError进入 error handler</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// createError</span></span><br><span class="line">app.use(<span class="function"><span class="keyword">function</span>(<span class="params">req, res, next</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'createerror'</span>)</span><br><span class="line">    <span class="comment">//next() //带err的中间件  是错误处理，，createError时才会触发进入error handler</span></span><br><span class="line">    next(createError(<span class="number">404</span>));</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// error handler</span></span><br><span class="line">app.use(<span class="function"><span class="keyword">function</span>(<span class="params">err, req, res, next</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">' error handler'</span>)</span><br><span class="line">        <span class="comment">// set locals, only providing error in development</span></span><br><span class="line">    res.locals.message = err.message;</span><br><span class="line">    res.locals.error = req.app.get(<span class="string">'env'</span>) === <span class="string">'development'</span> ? err : &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// render the error page</span></span><br><span class="line">    res.status(err.status || <span class="number">500</span>); <span class="comment">//没有指定错误码时 便是500</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'render error'</span>)</span><br><span class="line">    res.render(<span class="string">'error'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h3><ul>
+<li>见自定义中间件例子，除了res.locals还有app.locals</li>
+<li>全局变量的使用： 比如 在layout.hbs使用按登录状态的nav <code>whichPartial navName</code></li>
+</ul>
+<h3 id="模板引擎"><a href="#模板引擎" class="headerlink" title="模板引擎"></a>模板引擎</h3><h4 id="设置hbs模板引擎"><a href="#设置hbs模板引擎" class="headerlink" title="设置hbs模板引擎"></a>设置hbs模板引擎</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置视图模板目录</span></span><br><span class="line">app.set(<span class="string">'views'</span>, path.join(__dirname, <span class="string">'views'</span>));</span><br><span class="line"><span class="comment">// 设置模板引擎</span></span><br><span class="line">app.set(<span class="string">'view engine'</span>, <span class="string">'hbs'</span>);</span><br><span class="line"><span class="comment">// 设置模板文件的后缀名</span></span><br><span class="line"><span class="comment">//</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="render"><a href="#render" class="headerlink" title="render"></a>render</h4><ul>
+<li>以views目录为基准 <code>res.render(&#39;path&#39; , options)</code></li>
+<li>options中layout默认为’layout’,渲染布局页，布局页用 三括号 body三括号 承载其他模板</li>
+</ul>
+<h4 id="hbs语法"><a href="#hbs语法" class="headerlink" title="hbs语法"></a>hbs语法</h4><ul>
+<li><p>官方文档：<a href="https://handlebarsjs.com/guide/partials.html#basic-partials" target="_blank" rel="noopener">https://handlebarsjs.com/guide/partials.html#basic-partials</a></p>
+</li>
+<li><p>插值表达式</p>
+</li>
+<li><p>条件判断if  switch</p>
+</li>
+<li><p>循环each (数组/对象)</p>
+</li>
+<li><p>partials/helpers</p>
+<ul>
+<li><p>注册partial目录：<code>hbs.registerPartials(path.join(__dirname, &#39;../views/partials&#39;));</code></p>
+</li>
+<li><p>自定义helper: <code>var helper = require(&#39;./helper&#39;);</code>,app中引入即可，hbs是单例</p>
+</li>
+<li><p>如代码搬家context.fn(this)/context.inverse(this)</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> blocks = &#123;&#125;; <span class="comment">//代码块缓存对象  全局变量，服务器开着就不会消失，， </span></span><br><span class="line">hbs.registerHelper(<span class="string">'extend'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">name, context</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// context 是上下文，保存有用方法和数据，最后一个参数永远是context,,hbs内部调用时传入</span></span><br><span class="line">    <span class="keyword">let</span> block = blocks[name]; <span class="comment">// block用来存放代码块</span></span><br><span class="line">    <span class="keyword">if</span> (!block) &#123;</span><br><span class="line">        block = blocks[name] = [];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 编译指令中代码块并放入block</span></span><br><span class="line">    block.push(context.fn(<span class="keyword">this</span>)); <span class="comment">//context.fn方法将数据编译到非else的模板中  传递this,块级helper中的变量才会编译进模板内容</span></span><br><span class="line">    <span class="comment">// 与context.fn()配对还有一个方法</span></span><br><span class="line">    <span class="comment">//block.push(context.inverse(this));// //context.inverse()方法将数据编译到else的分支模板中，，块级partial中可以用else</span></span><br><span class="line">    <span class="comment">//总之：context.fn和inverse是取得块级模板中的模板内容，传递this则会把块级模板内的变量也编译进模板内容中，最后输出到页面（helper有返回值才行，没有返回值就不会有东西输出给页面）</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">hbs.registerHelper(<span class="string">'block'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> val = (blocks[name] || []).join(<span class="string">''</span>);  </span><br><span class="line">    blocks[name] = []; <span class="comment">//清空缓存</span></span><br><span class="line">    <span class="keyword">return</span> val;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>行级partial</p>
+<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="template-variable">&#123;&#123;&gt; nav&#125;&#125;</span><span class="xml">   // 行级partial,像这种不需要传参可用</span></span><br><span class="line"><span class="template-variable">&#123;&#123;&gt; (whichPartial navName)&#125;&#125;</span><span class="xml">  // 动态行级partial</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>块级partial</p>
+<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="comment">&lt;!--用法1 块级partial 错误处理--&gt;</span></span></span><br><span class="line"><span class="template-tag">&#123;&#123;#&gt; <span class="name">ooxx</span>&#125;&#125;</span></span><br><span class="line"><span class="xml">因为没有ooxx视图，所以出现这句话</span></span><br><span class="line"><span class="template-tag">&#123;&#123;/<span class="name">ooxx</span>&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="comment">&lt;!--用法2 块级partial 传递内容: 封装窗口为例--&gt;</span></span></span><br><span class="line"><span class="template-tag">&#123;&#123;#&gt; <span class="name">win</span> obj &#125;&#125;</span><span class="xml"><span class="comment">&lt;!--传参方式1:哈希，键=值（变量）如title='wintitle' a='a' b='b'；传参方式2：对象，则win视图中可直接使用相关属性--&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"color:yellow"</span>&gt;</span>这是窗口的内容<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  // 块级partail里 没有命名的默认为@partial-block， 组件中通过&gt; @partial-block引用内容</span></span><br><span class="line"><span class="template-tag">&#123;&#123;/<span class="name">win</span>&#125;&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="xml">//对应hbs</span></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"win"</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"win-title"</span>&gt;</span></span><span class="template-variable">&#123;&#123;key&#125;&#125;</span><span class="xml"> </span><span class="template-variable">&#123;&#123;title&#125;&#125;</span><span class="xml"> </span><span class="template-variable">&#123;&#123;a&#125;&#125;</span><span class="xml"> </span><span class="template-variable">&#123;&#123;b&#125;&#125;</span><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    </span><span class="comment">&#123;&#123;!-- 插槽@partial-block --&#125;&#125;</span></span><br><span class="line"><span class="xml">    </span><span class="template-variable">&#123;&#123;&gt; @partial-block&#125;&#125;</span></span><br><span class="line"><span class="xml">    </span><span class="template-variable">&#123;&#123;&gt; @partial-block&#125;&#125;</span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="comment">&lt;!--用法2 块级partial 布局组件--&gt;</span></span></span><br><span class="line"><span class="template-tag">&#123;&#123;#&gt; <span class="name">layout</span>&#125;&#125;</span></span><br><span class="line"><span class="comment">&#123;&#123;!-- partial调用时命名多个插槽 #*inline--&#125;&#125;</span></span><br><span class="line"><span class="xml">    </span><span class="template-tag">&#123;&#123;#*<span class="name">inline</span> 'top'&#125;&#125;</span></span><br><span class="line"><span class="xml">        这是top</span></span><br><span class="line"><span class="xml">    </span><span class="template-tag">&#123;&#123;/<span class="name">inline</span>&#125;&#125;</span></span><br><span class="line"><span class="xml">    </span><span class="template-tag">&#123;&#123;#*<span class="name">inline</span> 'foo'&#125;&#125;</span></span><br><span class="line"><span class="xml">        foo</span></span><br><span class="line"><span class="xml">    </span><span class="template-tag">&#123;&#123;/<span class="name">inline</span>&#125;&#125;</span></span><br><span class="line"><span class="xml">    </span><span class="template-tag">&#123;&#123;#*<span class="name">inline</span> 'bar'&#125;&#125;</span></span><br><span class="line"><span class="xml">        bar</span></span><br><span class="line"><span class="xml">    </span><span class="template-tag">&#123;&#123;/<span class="name">inline</span>&#125;&#125;</span></span><br><span class="line"><span class="template-tag">&#123;&#123;/<span class="name">layout</span>&#125;&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="xml">对应hbs</span></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"top"</span>&gt;</span></span></span><br><span class="line"><span class="xml">    </span><span class="template-variable">&#123;&#123;&gt; top&#125;&#125;</span><span class="xml">  // partial内部按插槽名引用内容</span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"content"</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"left"</span>&gt;</span></span></span><br><span class="line"><span class="xml">        </span><span class="template-variable">&#123;&#123;&gt; foo&#125;&#125;</span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"right"</span>&gt;</span></span></span><br><span class="line"><span class="xml">        </span><span class="template-variable">&#123;&#123;&gt; bar&#125;&#125;</span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="组件化"><a href="#组件化" class="headerlink" title="组件化"></a>组件化</h3><ul>
+<li>参考<strong>模板引擎partial</strong>使用</li>
+<li>主要模式： 组件提取+代码搬家，将某一功能html/css/js写成一个组件，用代码搬家，最终整合到layout模板的指定位置</li>
+<li>案例参考： views/partials/pager  <strong>分页组件</strong>的使用</li>
+</ul>
+<h2 id="url参数"><a href="#url参数" class="headerlink" title="url参数"></a>url参数</h2><h3 id="完整url"><a href="#完整url" class="headerlink" title="完整url"></a>完整url</h3><ul>
+<li><p>‘<a href="http://user:pass@sub.example.com:8080/p/a/t/h?query=string#hash&#39;" target="_blank" rel="noopener">http://user:pass@sub.example.com:8080/p/a/t/h?query=string#hash&#39;</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// url 中间件</span></span><br><span class="line">url.parse结果： 一切url参数的处理 可以参考</span><br><span class="line"> &#123;</span><br><span class="line">  protocol: <span class="string">'http:'</span>,   <span class="comment">// 协议</span></span><br><span class="line">  slashes: <span class="literal">true</span>,  <span class="comment">//</span></span><br><span class="line">  auth: <span class="string">'user:pass'</span>,  <span class="comment">// 用户登录才能访问</span></span><br><span class="line">  host: <span class="string">'sub.example.com:8080'</span>,  <span class="comment">// 域名（包含端口）</span></span><br><span class="line">  port: <span class="string">'8080'</span>, <span class="comment">//端口</span></span><br><span class="line">  hostname: <span class="string">'sub.example.com'</span>, <span class="comment">// 域名（不包含端口）</span></span><br><span class="line">  hash: <span class="string">'#hash'</span>,  <span class="comment">// 哈希值</span></span><br><span class="line">  search: <span class="string">'?query=string'</span>,  <span class="comment">// ？及？后面的部分</span></span><br><span class="line">  query: <span class="string">'query=string'</span>, <span class="comment">// ？后面的部分</span></span><br><span class="line">  pathname: <span class="string">'/p/a/t/h'</span>,  <span class="comment">//端口后面， ？之前的部分</span></span><br><span class="line">  path: <span class="string">'/p/a/t/h?query=string'</span>,  <span class="comment">// 端口后面的部分，不包含哈希</span></span><br><span class="line">  href:<span class="string">'http://user:pass@sub.example.com:8080/p/a/t/h?query=string#hash'</span>  <span class="comment">// 完整请求url</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h3 id="参数类型"><a href="#参数类型" class="headerlink" title="参数类型"></a>参数类型</h3><blockquote>
+<p> get(url占位参，查询参)， post(urlencoded, json)</p>
+</blockquote>
+<h4 id="get传参"><a href="#get传参" class="headerlink" title="get传参"></a>get传参</h4><ul>
+<li><p>原生： url模块  : <code>let urlObj = url.parse(str, true)</code></p>
+</li>
+<li><p>express: 封装在req.query(查询参)， req.params(url参数)</p>
+</li>
+</ul>
+<h4 id="post传参"><a href="#post传参" class="headerlink" title="post传参"></a>post传参</h4><ul>
+<li><p>原生： querystring模块 <code>let obj = qs.parse(param)</code>； querystring是用来处理urlencoded形式的数据的方法，，不论get,post，， post的数据默认也是这种形式</p>
+</li>
+<li><p>express</p>
+<ul>
+<li>express自带： <code>app.use(express.json())</code> <code>app.use(express.urlencoded({ extended: false }));</code>  </li>
+<li>body-parser: <code>app.use(bodyParser.urlencoded({ extended: false }))</code> <code>app.use(bodyParser.json());</code></li>
+<li>其他： 如<strong>multiparty</strong>，，则支持表单普通类型和文件类型数据的提交</li>
+<li>除了文件类型，都是通过req.body获取表单字段数据，，，文件通过req.file;; 响应json数据可以通过res.send或res.json</li>
+</ul>
+</li>
+</ul>
+<h2 id="表单（todo）"><a href="#表单（todo）" class="headerlink" title="表单（todo）"></a>表单（todo）</h2><h3 id="数据提交"><a href="#数据提交" class="headerlink" title="数据提交"></a>数据提交</h3><h4 id="表单默认方式"><a href="#表单默认方式" class="headerlink" title="表单默认方式"></a>表单默认方式</h4><ul>
+<li>get</li>
+<li>post</li>
+<li>enctype</li>
+</ul>
+<h4 id="ajax-restful提交"><a href="#ajax-restful提交" class="headerlink" title="ajax restful提交"></a>ajax restful提交</h4><ul>
+<li>urlencoded</li>
+<li>json</li>
+<li>datatype/content-type</li>
+</ul>
+<h3 id="文件上传-数据校验"><a href="#文件上传-数据校验" class="headerlink" title="文件上传/数据校验"></a>文件上传/数据校验</h3><blockquote>
+<p>文件上传和数据校验是通过针对某一个路由，添加问价上传和数据校验的<strong>中间件</strong>进行实现</p>
+</blockquote>
+<h4 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h4><blockquote>
+<p>express中multer模块为例</p>
+<p>文件上传： 表单设置multi-formdata， 一般文件用file获取，表单项用name获取</p>
+</blockquote>
+<ul>
+<li><p>multer: <code>const multer = require(&#39;multer&#39;);</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置存储目录和filename</span></span><br><span class="line"><span class="keyword">const</span> storage = multer.diskStorage(&#123; <span class="comment">//比单个dest内容更丰富</span></span><br><span class="line">    destination: function(req, file, cb) &#123; <span class="comment">// 存储目录</span></span><br><span class="line">        cb(<span class="keyword">null</span>, <span class="string">'public/images'</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    filename: function(req, file, cb) &#123;</span><br><span class="line">        let extname = <span class="string">''</span>;</span><br><span class="line">        <span class="keyword">switch</span> (file.mimetype) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'image/jpeg'</span>:</span><br><span class="line">                extname = <span class="string">'.jpg'</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'image/png'</span>:</span><br><span class="line">                extname = <span class="string">'.png'</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'image/gif'</span>:</span><br><span class="line">                extname = <span class="string">'.gif'</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        cb(<span class="keyword">null</span>, Date.now() + extname);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 实例化multer</span></span><br><span class="line"><span class="keyword">const</span> upload = multer(&#123; </span><br><span class="line">    <span class="comment">// dest: 'public/images',  </span></span><br><span class="line">    storage,</span><br><span class="line">    limits: &#123; fileSize: <span class="number">2</span> * <span class="number">1024</span> * <span class="number">1024</span> &#125;, <span class="comment">//最大2M</span></span><br><span class="line">    fileFilter: function(req, file, cb) &#123;</span><br><span class="line">        console.log(file);</span><br><span class="line">        <span class="comment">// 判断文件是否合法，合法则处理，不合法则拒绝</span></span><br><span class="line">        <span class="keyword">if</span> (file.mimetype === <span class="string">'image/gif'</span> ||</span><br><span class="line">            file.mimetype === <span class="string">'image/jpeg'</span> ||</span><br><span class="line">            file.mimetype === <span class="string">'image/png'</span>) &#123;</span><br><span class="line">            <span class="comment">// 接收文件</span></span><br><span class="line">            cb(<span class="keyword">null</span>, <span class="keyword">true</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            cb(<span class="keyword">new</span> Error(<span class="string">'请上传图片格式'</span>), <span class="keyword">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="数据校验"><a href="#数据校验" class="headerlink" title="数据校验"></a>数据校验</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; body, validationResult &#125; = <span class="built_in">require</span>(<span class="string">'express-validator/check'</span>); <span class="comment">//解构得到body(req.body) 和 validationResult  ；body针对post data，还有query params对应不同传参方式的参数</span></span><br><span class="line"><span class="keyword">const</span> validations = [ <span class="comment">//validations每一项都是一个中间件</span></span><br><span class="line">    body(<span class="string">'name'</span>).not().isEmpty().withMessage(<span class="string">'名称必填'</span>), <span class="comment">//链式方法</span></span><br><span class="line">    body(<span class="string">'description'</span>).not().isEmpty().withMessage(<span class="string">'描述信息必填'</span>),</span><br><span class="line">    body(<span class="string">'time'</span>).not().isEmpty().withMessage(<span class="string">'时间必填'</span>)</span><br><span class="line">    .isAfter(<span class="keyword">new</span> <span class="built_in">Date</span>().toString()).withMessage(<span class="string">'截止日期必须晚于当前时间'</span>)</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+<h4 id="中间件综合上传和校验"><a href="#中间件综合上传和校验" class="headerlink" title="中间件综合上传和校验"></a>中间件综合上传和校验</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">router.post(<span class="string">'/open-course'</span>, [upload.single(<span class="string">'file'</span>), ...validations],  <span class="comment">// 中间件callback多个的应用</span></span><br><span class="line">    <span class="keyword">async</span>(req, res, next) =&gt; &#123; </span><br><span class="line">&#125;)</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="comment">// 文件获取</span></span><br><span class="line">upload.single(<span class="string">'id'</span>)将单文件存放到静态资源目录，数据库存储文件名req.file.filename</span><br><span class="line"></span><br><span class="line"><span class="comment">// 校验结果</span></span><br><span class="line"><span class="keyword">let</span> errors = validationResult(req);   </span><br><span class="line">errors = errors.formatWith(<span class="function">(<span class="params">&#123; msg &#125;</span>) =&gt;</span> msg);  <span class="comment">// 简化校验信息</span></span><br><span class="line">errors.array()	  <span class="comment">//查看校验信息</span></span><br><span class="line">errors.isEmpty()  <span class="comment">//</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h2><h3 id="crud-sql"><a href="#crud-sql" class="headerlink" title="crud sql"></a>crud sql</h3><ul>
+<li><p>常规query</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> query(<span class="string">'select * from open_course'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">await</span> query(sql, [offset, pageSize])</span><br><span class="line"></span><br><span class="line"><span class="keyword">await</span>  query(<span class="string">'insert into open_course set ?'</span>, req.body)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>mysql 格式化sql+query，防止注入</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sql &#x3D; mysql.format(&#39;update  open_course set ? where id &#x3D;?&#39;, [req.body, id]);</span><br><span class="line">const result&#x3D;await query(sql);</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h3 id="普通查询封装promise"><a href="#普通查询封装promise" class="headerlink" title="普通查询封装promise"></a>普通查询封装promise</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//db.js</span></span><br><span class="line"><span class="keyword">const</span> mysql=<span class="built_in">require</span>(<span class="string">'mysql'</span>);</span><br><span class="line"><span class="keyword">const</span> cfg=&#123;</span><br><span class="line">    host:<span class="string">'localhost'</span>,</span><br><span class="line">    user:<span class="string">'kkb_admin'</span>,</span><br><span class="line">    password:<span class="string">'admin'</span>,</span><br><span class="line">    database:<span class="string">'kkb'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports=&#123;</span><br><span class="line">    query:<span class="function"><span class="keyword">function</span>(<span class="params">sql, value</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</span><br><span class="line">            <span class="keyword">const</span> conn =mysql.createConnection(cfg);</span><br><span class="line">            conn.connect();<span class="comment">//可省略</span></span><br><span class="line">            conn.query(sql, value, (err, results)=&gt;&#123;</span><br><span class="line">                <span class="keyword">if</span>(err)</span><br><span class="line">                    reject(err);  <span class="comment">//err是promise的值</span></span><br><span class="line">                    <span class="keyword">else</span></span><br><span class="line">                    resolve(results);<span class="comment">//results是promise的值</span></span><br><span class="line">            &#125;);</span><br><span class="line">            conn.end();<span class="comment">//end方法会在所有查询结束后执行  比较智能  不用写在回调里</span></span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 外部使用db async await</span></span><br><span class="line"><span class="keyword">const</span> &#123;query&#125;= <span class="built_in">require</span>(<span class="string">'../models/db'</span>);</span><br><span class="line">router.get(<span class="string">'/'</span>,  <span class="keyword">async</span> (req, res, next)=&gt;&#123;</span><br><span class="line">       <span class="keyword">const</span> sql = <span class="string">'SELECT * FROM open_course ORDER BY time DESC LIMIT ?,?'</span>;<span class="comment">// LIMIT 		offset,pageSize</span></span><br><span class="line">       <span class="keyword">const</span> results = <span class="keyword">await</span> query(sql, [offset, pageSize]);<span class="comment">//sql多个参数，用数组</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="连接池"><a href="#连接池" class="headerlink" title="连接池"></a>连接池</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//连接池  普通创建连接池的写法</span></span><br><span class="line"><span class="comment">// const pool = mysql.createPool(cfg);//创建连接池</span></span><br><span class="line"><span class="comment">// module.exports=&#123;</span></span><br><span class="line"><span class="comment">//     query:function(sql, value)&#123;//不传回调，用promise的resolve和reject替代回调  返回promise, 在外部把之前要传的回调传给promise的resolve和reject</span></span><br><span class="line"><span class="comment">//         return new Promise(function(resolve, reject)&#123;</span></span><br><span class="line"><span class="comment">//             pool.getConnection((err, conn)=&gt;&#123;//获取连接</span></span><br><span class="line"><span class="comment">//                 conn.query(sql, value, (err, results)=&gt;&#123;</span></span><br><span class="line"><span class="comment">//                     if(err)</span></span><br><span class="line"><span class="comment">//                         reject(err);  //err是promise的值</span></span><br><span class="line"><span class="comment">//                     else</span></span><br><span class="line"><span class="comment">//                         resolve(results);//results是promise的值</span></span><br><span class="line"><span class="comment">//                 &#125;);</span></span><br><span class="line"><span class="comment">//                 conn.release();  // 释放连接   不是end</span></span><br><span class="line"><span class="comment">//             &#125;) ;</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//         &#125;);</span></span><br><span class="line"><span class="comment">//     &#125;</span></span><br><span class="line"><span class="comment">// &#125;;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//连接池  精简版   pool去查询 等价于创建连接  连接去查询 和释放连接</span></span><br><span class="line"><span class="keyword">const</span> pool = mysql.createPool(cfg);<span class="comment">//创建连接池</span></span><br><span class="line"><span class="built_in">module</span>.exports=&#123;</span><br><span class="line">    query:<span class="function"><span class="keyword">function</span>(<span class="params">sql, value</span>)</span>&#123;<span class="comment">//不传回调，用promise的resolve和reject替代回调  返回promise, 在外部把之前要传的回调传给promise的resolve和reject</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</span><br><span class="line">            <span class="comment">//直接使用pool去查询</span></span><br><span class="line">            pool.query(sql, value,(err, results)=&gt;&#123;</span><br><span class="line">                <span class="keyword">if</span>(err) reject(err);</span><br><span class="line">                <span class="keyword">else</span> resolve(results);</span><br><span class="line">            &#125;)</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="sequelize"><a href="#sequelize" class="headerlink" title="sequelize"></a>sequelize</h3><ul>
+<li><p>安装： npm i sequelize mysql2 -S  // mysql2 为mysql对应的驱动</p>
+</li>
+<li><p>orm，不用再写具体sql,语义化查询</p>
+</li>
+<li><p>基本使用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1 引入</span></span><br><span class="line"><span class="keyword">const</span> Sequelize = <span class="built_in">require</span>(<span class="string">'sequelize'</span>);  </span><br><span class="line"><span class="comment">//2 实例化</span></span><br><span class="line"><span class="keyword">const</span> sequelize = <span class="keyword">new</span> Sequelize(<span class="string">'kkb'</span>, <span class="string">'kkb_admin'</span>, <span class="string">'admin'</span>, &#123;</span><br><span class="line">    host: <span class="string">'localhost'</span>,</span><br><span class="line">    dialect: <span class="string">'mysql'</span>, <span class="comment">//方言</span></span><br><span class="line">    pool: &#123; <span class="attr">max</span>: <span class="number">5</span>, <span class="attr">acquire</span>: <span class="number">30000</span>, <span class="attr">idle</span>: <span class="number">10000</span> &#125;, <span class="comment">//连接池</span></span><br><span class="line">    timestamps: <span class="literal">false</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//3 定义模型</span></span><br><span class="line"><span class="keyword">const</span> User = sequelize.define(<span class="string">'user'</span>, &#123; <span class="comment">//模型名！， 字段名</span></span><br><span class="line">    firstName: Sequelize.STRING, <span class="comment">//更多设置使用对象</span></span><br><span class="line">    lastName: Sequelize.STRING,</span><br><span class="line">    age: Sequelize.INTEGER</span><br><span class="line"></span><br><span class="line">&#125;, &#123; <span class="comment">//其他参数</span></span><br><span class="line">    <span class="comment">//freezeTableName:true  //表名默认是模型名+s  冻结则不会</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//4 同步数据库  force:true 强制更新  先删表</span></span><br><span class="line"><span class="comment">// model.sync建表 model.create插入数据</span></span><br><span class="line">User.sync(&#123; <span class="attr">force</span>: <span class="literal">false</span> &#125;).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123; <span class="comment">//返回的promise,直接then</span></span><br><span class="line">    <span class="keyword">return</span> User.create(&#123;   <span class="comment">// 插入数据</span></span><br><span class="line">        firstName: <span class="string">'Tom'</span>,</span><br><span class="line">        lastName: <span class="string">'Cruise'</span>,</span><br><span class="line">        age: <span class="number">30</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;  <span class="comment">// 查询</span></span><br><span class="line">    <span class="comment">//查询插入的数据  findAll  看执行的sql</span></span><br><span class="line">    User.findAll().then(<span class="function"><span class="params">user</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(user);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>模块化</p>
+<blockquote>
+<p>将每个模型单独存放一个文件，利用import整合，统一导出</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//封装</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> db = [Sequelize, sequelize]; <span class="comment">//导出类和实例对象, Sequelize为了定义数据类型</span></span><br><span class="line"><span class="comment">//模型导入  除了db.js index.js 其他文件都是单个模型</span></span><br><span class="line">fs.readdirSync(__dirname)</span><br><span class="line">    .filter(<span class="function"><span class="params">file</span> =&gt;</span> (file !== <span class="string">'index.js'</span> &amp;&amp; file !== <span class="string">'db.js'</span>))</span><br><span class="line">    .forEach(<span class="function"><span class="params">file</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> model = sequelize.import(path.join(__dirname, file));</span><br><span class="line">        db[model.name] = model;  <span class="comment">// 增加到db</span></span><br><span class="line">    &#125;);</span><br><span class="line"><span class="built_in">module</span>.exports = db;</span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line"><span class="comment">//sequelize 模型使用案例，，动态分页</span></span><br><span class="line"><span class="keyword">const</span> &#123;OpenCourse&#125; = <span class="built_in">require</span>(<span class="string">'../models'</span>);</span><br><span class="line">router.get(<span class="string">'/bySeq'</span>, <span class="keyword">async</span> (req, res, next)=&gt;&#123;</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="keyword">const</span> page = +req.query.page || <span class="number">1</span>;<span class="comment">// 获取当前页码，如没有则默认1</span></span><br><span class="line">        <span class="keyword">const</span> size = +req.query.size || <span class="number">3</span>;<span class="comment">// 每页条数</span></span><br><span class="line">        <span class="comment">//返回带总条数的对象 &#123;rows: [], count&#125;</span></span><br><span class="line">        <span class="keyword">const</span> results= <span class="keyword">await</span> OpenCourse.findAndCountAll(&#123;  <span class="comment">// 不再需要提供sql</span></span><br><span class="line">            offset:(page<span class="number">-1</span>)*size,<span class="comment">//偏移量</span></span><br><span class="line">            limit:size,<span class="comment">//每页大小</span></span><br><span class="line">            order:[[<span class="string">'time'</span>,<span class="string">'DESC'</span>]]<span class="comment">//支持多字段排序</span></span><br><span class="line">        &#125;);</span><br><span class="line">        res.render(<span class="string">'open-course'</span>, &#123;</span><br><span class="line">            title:<span class="string">'公开课'</span>,</span><br><span class="line">            openCourses:results.rows,<span class="comment">//查询结果时RowDataPacket对象数组</span></span><br><span class="line">            pagination: getPagination(results.count, page, size)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span>(err)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(err);</span><br><span class="line">        next(err);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3></li>
+<li><p>连接池+事务 Promise封装</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> pool = mysql.createPool(cfg);<span class="comment">//创建连接池</span></span><br><span class="line"><span class="built_in">module</span>.exports=&#123;</span><br><span class="line">    query:<span class="function"><span class="keyword">function</span>(<span class="params">sql, value</span>)</span>&#123; </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</span><br><span class="line">            pool.query(sql, value,(err, results)=&gt;&#123;</span><br><span class="line">                <span class="keyword">if</span>(err) reject(err);</span><br><span class="line">                <span class="keyword">else</span> resolve(results);</span><br><span class="line">            &#125;)</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">    pool,</span><br><span class="line">    query2: <span class="function"><span class="keyword">function</span> (<span class="params">conn, sql, value</span>) </span>&#123;  <span class="comment">// 不使用连接池的查询，事务得明确得知道哪个连接</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            conn.query(sql, value, (err, results) =&gt; &#123;</span><br><span class="line">                <span class="keyword">if</span> (err) reject(err);</span><br><span class="line">                <span class="keyword">else</span> resolve(results);</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">    getConnection: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            pool.getConnection(<span class="function">(<span class="params">err, conn</span>) =&gt;</span> &#123;    <span class="comment">// 但获取连接  还是可以用pool获取连接，  事务的时候知道是哪个conn使用即可</span></span><br><span class="line">                <span class="keyword">if</span> (err) reject(err);</span><br><span class="line">                <span class="keyword">else</span> resolve(conn);</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">    beginTransaction: <span class="function"><span class="keyword">function</span> (<span class="params">conn</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            conn.beginTransaction(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (err) reject(err);</span><br><span class="line">                <span class="keyword">else</span> resolve();</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">    rollback: <span class="function"><span class="keyword">function</span> (<span class="params">conn</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            conn.rollback(resolve);</span><br><span class="line">            conn.end();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">    commit: <span class="function"><span class="keyword">function</span> (<span class="params">conn</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            conn.commit(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (err) reject(err);</span><br><span class="line">                <span class="keyword">else</span> resolve();</span><br><span class="line">            &#125;);</span><br><span class="line">            conn.end();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="跨域-restful"><a href="#跨域-restful" class="headerlink" title="跨域/restful"></a>跨域/restful</h2><h3 id="restful"><a href="#restful" class="headerlink" title="restful"></a>restful</h3><ul>
+<li>get/post/put/delete/header/option</li>
+<li>简单请求/preflight</li>
+<li>restful api : api是提供接口数据，不对页面进行渲染</li>
+</ul>
+<h3 id="跨域"><a href="#跨域" class="headerlink" title="跨域"></a>跨域</h3><ul>
+<li>同源策略： 针对脚本</li>
+<li>解决方式: <ul>
+<li>jsonp(同源对script无效，传递callback search参数，返回callback(data)执行); ajax回调和jsonp不同，ajax是xhr根据状态监听执行回调</li>
+<li>cors: Access-Control-Allow-Origin/Headers/Methods/Credentials</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/nodejs/" rel="tag"># nodejs</a>
+              <a href="/tags/%E5%90%8E%E7%AB%AF/" rel="tag"># 后端</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/14/typro%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E8%AE%BE%E7%BD%AE/" rel="prev" title="typro插入图片设置">
+      <i class="fa fa-chevron-left"></i> typro插入图片设置
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#nodejs后台渲染核心知识点"><span class="nav-number">1.</span> <span class="nav-text">nodejs后台渲染核心知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#express"><span class="nav-number">1.1.</span> <span class="nav-text">express</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#express路由"><span class="nav-number">1.1.1.</span> <span class="nav-text">express路由</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模块化"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">模块化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#路由传参"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">路由传参</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义中间件"><span class="nav-number">1.1.2.</span> <span class="nav-text">自定义中间件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#错误处理："><span class="nav-number">1.1.3.</span> <span class="nav-text">错误处理：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全局变量"><span class="nav-number">1.1.4.</span> <span class="nav-text">全局变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模板引擎"><span class="nav-number">1.1.5.</span> <span class="nav-text">模板引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#设置hbs模板引擎"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">设置hbs模板引擎</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#render"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">render</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hbs语法"><span class="nav-number">1.1.5.3.</span> <span class="nav-text">hbs语法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组件化"><span class="nav-number">1.1.6.</span> <span class="nav-text">组件化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#url参数"><span class="nav-number">1.2.</span> <span class="nav-text">url参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#完整url"><span class="nav-number">1.2.1.</span> <span class="nav-text">完整url</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数类型"><span class="nav-number">1.2.2.</span> <span class="nav-text">参数类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#get传参"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">get传参</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#post传参"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">post传参</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表单（todo）"><span class="nav-number">1.3.</span> <span class="nav-text">表单（todo）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据提交"><span class="nav-number">1.3.1.</span> <span class="nav-text">数据提交</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#表单默认方式"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">表单默认方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ajax-restful提交"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">ajax restful提交</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件上传-数据校验"><span class="nav-number">1.3.2.</span> <span class="nav-text">文件上传&#x2F;数据校验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件上传"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">文件上传</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据校验"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">数据校验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中间件综合上传和校验"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">中间件综合上传和校验</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql"><span class="nav-number">1.4.</span> <span class="nav-text">mysql</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#crud-sql"><span class="nav-number">1.4.1.</span> <span class="nav-text">crud sql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#普通查询封装promise"><span class="nav-number">1.4.2.</span> <span class="nav-text">普通查询封装promise</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接池"><span class="nav-number">1.4.3.</span> <span class="nav-text">连接池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sequelize"><span class="nav-number">1.4.4.</span> <span class="nav-text">sequelize</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务"><span class="nav-number">1.4.5.</span> <span class="nav-text">事务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#跨域-restful"><span class="nav-number">1.5.</span> <span class="nav-text">跨域&#x2F;restful</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#restful"><span class="nav-number">1.5.1.</span> <span class="nav-text">restful</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跨域"><span class="nav-number">1.5.2.</span> <span class="nav-text">跨域</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">ccb</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/alittlegit" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;alittlegit" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ccb</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.1.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
